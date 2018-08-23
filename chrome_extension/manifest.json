@@ -1,0 +1,33 @@
+{
+  "name": "Leetcode Buddy",
+  "version": "0.1",
+  "description": "Help you review leetcode problems!",
+  "manifest_version": 2,
+  "background": {
+    "scripts": ["libs/closure-lib.js", "js/settings.js", "js/background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://leetcode.com/problems/*"],
+      "js": ["js/settings.js", "js/extract_problem_data.js"],
+      "run_at": "document_idle"
+    }
+ ],
+  "page_action": {
+    "default_popup": "html/popup.html",
+    "default_icon": {
+      "16": "res/images/popup_btn.ico",
+      "32": "res/images/popup_btn.ico",
+      "48": "res/images/popup_btn.ico",
+      "128": "res/images/popup_btn.ico"
+    }
+  },
+  "icons": {
+    "16": "res/images/popup_btn.ico",
+    "32": "res/images/popup_btn.ico",
+    "48": "res/images/popup_btn.ico",
+    "128": "res/images/popup_btn.ico"
+  },
+  "permissions": ["declarativeContent", "activeTab"]
+}
