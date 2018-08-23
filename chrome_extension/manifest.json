@@ -4,7 +4,7 @@
   "description": "Help you review leetcode problems!",
   "manifest_version": 2,
   "background": {
-    "scripts": ["libs/closure-lib.js", "js/settings.js", "js/background.js"],
+    "scripts": ["libs/jquery.min.js", "libs/closure-lib.js", "js/settings.js", "js/background.js"],
     "persistent": false
   },
   "content_scripts": [

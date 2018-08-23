@@ -9,12 +9,14 @@ const Settings = (function () {
   const commands = {
     ExtractProblemCmd: "ExtractProblemCmd",
     ProblemContents: "ProblemContents",
-    UploadProblemCompletion: "UploadProblemCompletion"
+    UploadProblemCompletion: "UploadProblemCompletion",
+    UploadResult: "UploadResult"
   };
   
   const status = {
     SUCC: "SUCC",
-    ERROR: "ERROR"
+    ERROR: "ERROR",
+    PENDING: "PENDING"
   };
   
   const host = "http://localhost:5000";

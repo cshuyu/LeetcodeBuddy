@@ -1,12 +1,12 @@
 {
   "dependencies": {
     "express": "^4.13.1",
-	"body-parser": "^1.13.2",
-	"nosql": "^3.0.3",
-	"cors": "^2.7.1",
-	"cookie-parser": "1.4"
+    "body-parser": "^1.13.2",
+    "nosql": "^3.0.3",
+    "cors": "^2.7.1",
+    "cookie-parser": "1.4"
   },
   "scripts": {
-  	"start": "node app.js"
+    "start": "node app.js"
   }
 }

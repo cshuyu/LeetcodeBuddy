@@ -1,8 +1,13 @@
 (function () {
   console.log("popup script executed. ");
   const commands = Settings.commands;
+  const STATUS = {
+    NOT_SUBMITTED: 0,
+    WAITING: 1,
+    SUBMITTED: 2
+  }
   let cached_detail = {};
-  let submitted = false;
+  let status = STATUS.NOT_SUBMITTED;
   // Build sanitizer.
   const sanitizerBuilder = new goog.html.sanitizer.HtmlSanitizer.Builder();
   sanitizerBuilder.onlyAllowTags(["DIV", "STRONG", "SPAN", "P", "CODE"]);
@@ -32,10 +37,11 @@
 
   /** Submit event listener. */
   function submit() {
-    if (submitted) {
-      document.getElementById("status").innerText = "You have submitted. ";
-      return ;
+    if (status !== STATUS.NOT_SUBMITTED) {
+      document.getElementById("status").innerText = "You have clicked submission. ";
+      return;
     }
+    status = STATUS.WAITING;
     const rating = document.getElementById("rating").value;
     const comments = document.getElementById("comments").value;
     cached_detail['rating'] = rating;
@@ -43,16 +49,7 @@
     chrome.runtime.sendMessage({
       cmd: commands.UploadProblemCompletion,
       data: cached_detail
-    }, function (response) {
-        console.log("received response: ",response);
-        if (response.status == Settings.status.SUCC) {
-          document.getElementById("submit").innerText = "Finished uploading";
-          submitted = true;
-        } else {
-          document.getElementById("submit").innerText = "Submit";
-          document.getElementById("status").innerText = "Failed uploading: "+response.details;
-        }
-    });
+    }, function (response) {});
     document.getElementById('submit').innerText = "Uploading...";
   }
 
@@ -62,6 +59,20 @@
       setTimeout(init, 500);
       return false;
     }
+    
+    // Listener for background
+    chrome.runtime.onMessage.addListener(function (msg, sender, callback) {
+      if (msg.cmd === Settings.commands.UploadResult) {
+        if(msg.data.status == Settings.status.SUCC) {
+          document.getElementById("submit").innerText = "Finished uploading.";
+          status = STATUS.SUBMITTED;
+        } else {
+           document.getElementById("submit").innerText = "Failed uploading.";
+          document.getElementById("status").innerText = msg.data.details;
+           status = STATUS.NOT_SUBMITTED;        
+        }
+      }
+    });
 
     submitBtn.addEventListener("click", submit);
     // Request problem detail.
